@@ -1,21 +1,16 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import ScoopOption from "./ScoopOption";
-import ToppingOption from "./ToppingOption";
-import Row from "react-bootstrap/Row";
-import AlertBanner from "../common/AlertBanner";
-import { pricePerItem } from "../../constants";
-import {
-  OrderDetailsProvider,
-  useOrderDetails,
-} from "../../contexts/OrderDetails";
-import { formatCurrency } from "../../utilities";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Row from 'react-bootstrap/Row';
+import ScoopOption from './ScoopOption';
+import ToppingOption from './ToppingOption';
+import AlertBanner from '../common/AlertBanner';
+import { pricePerItem } from '../../constants';
+import { useOrderDetails } from '../../contexts/OrderDetails';
+import { formatCurrency } from '../../utilities';
 
 export default function Options({ optionType }) {
   const [items, setItems] = useState([]);
-  // Store weather we have an alert in state
   const [error, setError] = useState(false);
-  // destructure the items we need
   const [orderDetails, updateItemCount] = useOrderDetails();
 
   // optionType is 'scoops' or 'toppings'
@@ -23,19 +18,15 @@ export default function Options({ optionType }) {
     axios
       .get(`http://localhost:3030/${optionType}`)
       .then((response) => setItems(response.data))
-      .catch((error) =>
-        // Set the error state if we catch an error
-        setError(true)
-      );
+      .catch((error) => setError(true));
   }, [optionType]);
 
-  // If we have an error we will return the alert component with the default props
   if (error) {
+    // @ts-ignore
     return <AlertBanner />;
   }
 
-  // If we do not return an AlertBanner wwe will go through the process of returning whatever we need
-  const ItemComponent = optionType === "scoops" ? ScoopOption : ToppingOption;
+  const ItemComponent = optionType === 'scoops' ? ScoopOption : ToppingOption;
   const title = optionType[0].toUpperCase() + optionType.slice(1).toLowerCase();
 
   const optionItems = items.map((item) => (

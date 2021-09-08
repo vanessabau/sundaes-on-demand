@@ -2,30 +2,27 @@ import {
   render,
   screen,
   waitForElementToBeRemoved,
-} from "@testing-library/react";
-import SummaryForm from "../SummaryForm";
-import userEvent from "@testing-library/user-event";
+} from '@testing-library/react';
+import SummaryForm from '../SummaryForm';
+import userEvent from '@testing-library/user-event';
 
-test("initial conditions", () => {
+test('Initial conditions', () => {
   render(<SummaryForm />);
-  const checkbox = screen.getByRole("checkbox", {
+  const checkbox = screen.getByRole('checkbox', {
     name: /terms and conditions/i,
   });
-
   expect(checkbox).not.toBeChecked();
 
-  const confirmButton = screen.getByRole("button", { name: /confirm order/i });
+  const confirmButton = screen.getByRole('button', { name: /confirm order/i });
   expect(confirmButton).toBeDisabled();
 });
 
-test("Checkbox disables button on first click and enables on second click", () => {
+test('Checkbox enables button on first click and disables on second click', () => {
   render(<SummaryForm />);
-
-  const checkbox = screen.getByRole("checkbox", {
+  const checkbox = screen.getByRole('checkbox', {
     name: /terms and conditions/i,
   });
-
-  const confirmButton = screen.getByRole("button", { name: /confirm order/i });
+  const confirmButton = screen.getByRole('button', { name: /confirm order/i });
 
   userEvent.click(checkbox);
   expect(confirmButton).toBeEnabled();
@@ -34,7 +31,7 @@ test("Checkbox disables button on first click and enables on second click", () =
   expect(confirmButton).toBeDisabled();
 });
 
-test("popover responds to hover", async () => {
+test('popover responds to hover', async () => {
   render(<SummaryForm />);
 
   // popover starts out hidden
